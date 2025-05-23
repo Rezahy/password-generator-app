@@ -48,6 +48,7 @@ const DeletePasswordButton = ({ id }: DeletePasswordButtonProps) => {
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<AlertDialogAction
+						disabled={isPending}
 						onClick={(e) => {
 							e.preventDefault();
 							deletePasswordHandler();

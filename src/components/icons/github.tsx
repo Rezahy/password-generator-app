@@ -1,4 +1,4 @@
-import { ISVGProps } from "@/@types/svg-icon";
+import type { ISVGProps } from "@/@types/svg-icon";
 import { cn } from "@/lib/utils";
 
 const Github = ({ size = 24, className, ...props }: ISVGProps) => {
