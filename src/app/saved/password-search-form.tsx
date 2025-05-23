@@ -1,15 +1,17 @@
-import { type FormEvent, useRef } from "react";
+import { type Dispatch, type FormEvent, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-
-const PasswordSearchForm = () => {
+type PasswordSearchFormProps = {
+	setValue: Dispatch<React.SetStateAction<string>>;
+};
+const PasswordSearchForm = ({ setValue }: PasswordSearchFormProps) => {
 	const searchRef = useRef<HTMLInputElement | null>(null);
 	const onSubmitHandler = (e: FormEvent) => {
 		e.preventDefault();
-		if (searchRef.current && searchRef.current.value.trim().length > 0) {
-			const value = searchRef.current.value;
-			console.log(value);
+		if (searchRef.current) {
+			const value = searchRef.current.value.trim();
+			setValue(value);
 		}
 	};
 	return (
