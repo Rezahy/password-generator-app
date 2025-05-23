@@ -4,7 +4,7 @@ export const allCharacters = {
 	uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 	lowercase: "abcdefghijklmnopqrstuvwxyz",
 	numbers: "0123456789",
-	symbol: "!@#$%^&*=-_",
+	symbols: "!@#$%^&*=-_",
 };
 
 type Option = keyof typeof allCharacters;
@@ -18,17 +18,20 @@ export const generatePasswordFunc = (passwordFilters: PasswordFiltersType) => {
 			return null;
 		})
 		.filter((key) => key !== null) as Option[];
-	const optionStrings = generateStringOfOptions(passwordFiltersChecked);
+	const optionStrings = generateStringOfOptions(passwordFiltersChecked, length);
 	return optionStrings.slice(0, length);
 };
 
-const generateStringOfOptions = (options: Option[]) => {
-	let result = "";
-
+const generateStringOfOptions = (options: Option[], length: number) => {
+	let patterns = "";
+	const password = [];
 	for (const opt of options) {
-		result += allCharacters[opt];
+		patterns += allCharacters[opt];
 	}
-	return result.length > 0 ? shuffle(result) : result;
+	for (let i = 0; i < length; i++) {
+		password.push(patterns[Math.floor(Math.random() * patterns.length)]);
+	}
+	return patterns.length > 0 ? shuffle(password.join("")) : patterns;
 };
 
 const shuffle = (s: string) => {

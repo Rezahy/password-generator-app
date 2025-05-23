@@ -9,8 +9,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
 import { Copy } from "lucide-react";
 import {
 	Dialog,
@@ -22,8 +20,13 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import usePassword from "@/stores/password";
+import PasswordSlider from "@/components/password-slider";
+import PasswordFilters from "@/components/password-filters";
 
 const HomePage = () => {
+	const generatedPassword = usePassword((state) => state.generatedPassword);
+	const generatePassword = usePassword((state) => state.generatePassword);
 	return (
 		<Card className="my-7 max-w-xl mx-auto">
 			<CardHeader>
@@ -34,52 +37,20 @@ const HomePage = () => {
 				<section>
 					<div className="grid w-full items-center gap-4">
 						<div className="flex space-x-1.5">
-							<Input readOnly value="hello world" />
+							<Input readOnly value={generatedPassword} />
 							<Button variant="outline" size="icon">
 								<Copy />
 							</Button>
 						</div>
-						<div className="flex flex-col space-y-1.5">
-							<Label htmlFor="length">Password Length</Label>
-							<div className="flex space-x-2">
-								<Input
-									id="length"
-									type="number"
-									className="w-1/8 min-w-[70px]"
-									min={1}
-									max={50}
-									step={1}
-									defaultValue={1}
-								/>
-								<Slider defaultValue={[33]} max={50} step={1} min={1} />
-							</div>
-						</div>
-						<div className="flex flex-col space-y-1.5">
-							<Label>Includes:</Label>
-							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-								<div className="flex space-x-1.5">
-									<Switch id="uppercase" />
-									<Label htmlFor="uppercase">Uppercase</Label>
-								</div>
-								<div className="flex space-x-1.5">
-									<Switch id="lowercase" />
-									<Label htmlFor="lowercase">Lowercase</Label>
-								</div>
-								<div className="flex space-x-1.5">
-									<Switch id="numbers" />
-									<Label htmlFor="numbers">Numbers</Label>
-								</div>
-								<div className="flex space-x-1.5">
-									<Switch id="symbols" />
-									<Label htmlFor="symbols">Symbols</Label>
-								</div>
-							</div>
-						</div>
+						<PasswordSlider />
+						<PasswordFilters />
 					</div>
 				</section>
 			</CardContent>
 			<CardFooter className="flex justify-between">
-				<Button variant="outline">Generate</Button>
+				<Button variant="outline" onClick={generatePassword}>
+					Generate
+				</Button>
 				<Dialog>
 					<DialogTrigger asChild>
 						<Button>Save</Button>
