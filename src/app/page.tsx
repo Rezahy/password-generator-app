@@ -12,6 +12,16 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Copy } from "lucide-react";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 
 const HomePage = () => {
 	return (
@@ -70,7 +80,31 @@ const HomePage = () => {
 			</CardContent>
 			<CardFooter className="flex justify-between">
 				<Button variant="outline">Generate</Button>
-				<Button>Save</Button>
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button>Save</Button>
+					</DialogTrigger>
+					<DialogContent className="sm:max-w-[425px]">
+						<DialogHeader>
+							<DialogTitle>Save Password</DialogTitle>
+							<DialogDescription>
+								Add your title for password. Click save when you're done.
+							</DialogDescription>
+						</DialogHeader>
+						<div className="space-y-2">
+							<Label htmlFor="title" className="text-right">
+								Password Title
+							</Label>
+							<Input id="title" className="col-span-3" />
+						</div>
+						<DialogFooter className="flex justify-between w-full">
+							<DialogClose>
+								<Button variant="outline">Cancel</Button>
+							</DialogClose>
+							<Button>Save</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
 			</CardFooter>
 		</Card>
 	);
