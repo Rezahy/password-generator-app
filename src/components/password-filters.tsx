@@ -9,7 +9,7 @@ const PasswordFilters = () => {
 	const symbols = usePassword((state) => state.passwordFilters.symbols);
 	const changeFilters = usePassword((state) => state.changeFilters);
 	return (
-		<div className="flex flex-col space-y-1.5">
+		<div className="flex flex-col space-y-2.5">
 			<Label>Includes:</Label>
 			<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 				<div className="flex space-x-1.5">

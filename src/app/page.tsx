@@ -31,15 +31,29 @@ import {
 } from "@/components/ui/tooltip";
 import copy from "copy-to-clipboard";
 import { toast } from "sonner";
+import { useRef, useState } from "react";
 
 const HomePage = () => {
 	const generatedPassword = usePassword((state) => state.generatedPassword);
 	const generatePassword = usePassword((state) => state.generatePassword);
+	const savePassword = usePassword((state) => state.savePassword);
 	const copyToClipboard = () => {
 		if (generatedPassword) {
 			copy(generatedPassword);
 			toast.success("Copied to clipboard");
 		}
+	};
+	const titleInputRef = useRef<HTMLInputElement | null>(null);
+	const [open, setOpen] = useState(false);
+	const savePasswordHandler = () => {
+		const title = titleInputRef.current?.value;
+		if (title) {
+			savePassword(title);
+			toast.success("Saved Successfully");
+			setOpen(false);
+			return;
+		}
+		toast.error("Please Enter a title");
 	};
 	return (
 		<Card className="my-7 max-w-xl mx-auto">
@@ -78,9 +92,9 @@ const HomePage = () => {
 				<Button variant="outline" onClick={generatePassword}>
 					Generate
 				</Button>
-				<Dialog>
+				<Dialog open={open} onOpenChange={setOpen}>
 					<DialogTrigger asChild>
-						<Button>Save</Button>
+						<Button disabled={!generatedPassword}>Save</Button>
 					</DialogTrigger>
 					<DialogContent className="sm:max-w-[425px]">
 						<DialogHeader>
@@ -93,13 +107,13 @@ const HomePage = () => {
 							<Label htmlFor="title" className="text-right">
 								Password Title
 							</Label>
-							<Input id="title" className="col-span-3" />
+							<Input id="title" className="col-span-3" ref={titleInputRef} />
 						</div>
 						<DialogFooter className="flex justify-between w-full">
 							<DialogClose>
 								<Button variant="outline">Cancel</Button>
 							</DialogClose>
-							<Button>Save</Button>
+							<Button onClick={savePasswordHandler}>Save</Button>
 						</DialogFooter>
 					</DialogContent>
 				</Dialog>
