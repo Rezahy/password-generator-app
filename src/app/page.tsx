@@ -23,10 +23,24 @@ import {
 import usePassword from "@/stores/password";
 import PasswordSlider from "@/components/password-slider";
 import PasswordFilters from "@/components/password-filters";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
+import copy from "copy-to-clipboard";
+import { toast } from "sonner";
 
 const HomePage = () => {
 	const generatedPassword = usePassword((state) => state.generatedPassword);
 	const generatePassword = usePassword((state) => state.generatePassword);
+	const copyToClipboard = () => {
+		if (generatedPassword) {
+			copy(generatedPassword);
+			toast.success("Copied to clipboard");
+		}
+	};
 	return (
 		<Card className="my-7 max-w-xl mx-auto">
 			<CardHeader>
@@ -38,9 +52,22 @@ const HomePage = () => {
 					<div className="grid w-full items-center gap-4">
 						<div className="flex space-x-1.5">
 							<Input readOnly value={generatedPassword} />
-							<Button variant="outline" size="icon">
-								<Copy />
-							</Button>
+							<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											variant="outline"
+											size="icon"
+											onClick={copyToClipboard}
+										>
+											<Copy />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Copy to clipboard</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
 						</div>
 						<PasswordSlider />
 						<PasswordFilters />
