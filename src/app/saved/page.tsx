@@ -4,11 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import PasswordSearchForm from "./password-search-form";
 import SavedPassword from "./saved-password";
 
-const SavedPasswordMotion = motion.create(SavedPassword);
-
 const SavedPasswordsPage = () => {
 	const savedPasswords = usePassword((state) => state.savedPasswords);
-
 	return (
 		<section>
 			<header>
@@ -21,7 +18,7 @@ const SavedPasswordsPage = () => {
 				<section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 py-7 gap-7">
 					<AnimatePresence>
 						{savedPasswords.map((p, index) => (
-							<SavedPasswordMotion
+							<motion.div
 								layout
 								key={p.id}
 								initial={{ opacity: 0 }}
@@ -31,10 +28,13 @@ const SavedPasswordsPage = () => {
 									delay: index / 10,
 								}}
 								exit={{ opacity: 0 }}
-								password={p.password}
-								title={p.title}
-								id={p.id}
-							/>
+							>
+								<SavedPassword
+									id={p.id}
+									hashedPassword={p.hashedPassword}
+									title={p.title}
+								/>
+							</motion.div>
 						))}
 					</AnimatePresence>
 				</section>

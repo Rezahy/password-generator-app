@@ -8,25 +8,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import usePassword from "@/stores/password";
 import copy from "copy-to-clipboard";
-import { Copy, EllipsisVertical, Eye, EyeOff, Trash } from "lucide-react";
+import { Copy, EllipsisVertical, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { decryptPassword } from "@/lib/crypto";
+import DeletePasswordButton from "./delete-password-button";
 
 type SavedPasswordProps = {
 	id: string;
 	title: string;
-	password: string;
+	hashedPassword: string;
 };
-const SavedPassword = ({ title, password, id }: SavedPasswordProps) => {
+const SavedPassword = ({ title, hashedPassword, id }: SavedPasswordProps) => {
 	const [show, setShow] = useState(false);
-	const deleteSavedPassword = usePassword((state) => state.deleteSavedPassword);
 	const toggleShow = () => {
 		setShow((prev) => !prev);
 	};
 	const copyToClipboard = () => {
-		copy(password);
+		copy(decryptPassword(hashedPassword));
 		toast.success("Copied to clipboard");
 	};
 	return (
@@ -40,10 +40,7 @@ const SavedPassword = ({ title, password, id }: SavedPasswordProps) => {
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent>
-						<DropdownMenuItem onClick={deleteSavedPassword.bind(null, id)}>
-							<Trash />
-							Delete
-						</DropdownMenuItem>
+						<DeletePasswordButton id={id} />
 						<DropdownMenuItem onClick={copyToClipboard}>
 							<Copy />
 							Copy
@@ -68,7 +65,7 @@ const SavedPassword = ({ title, password, id }: SavedPasswordProps) => {
 				<div className="flex items-center space-x-2">
 					<Input
 						type="text"
-						value={password}
+						value={decryptPassword(hashedPassword)}
 						readOnly
 						className={cn({ "blur-xs": !show })}
 					/>

@@ -3,6 +3,8 @@ import { generatePasswordFunc } from "@/lib/generate-password";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { v4 as uuidv4 } from "uuid";
+import { encryptPassword } from "@/lib/crypto";
+import { wait } from "@/lib/wait";
 
 export type PasswordFiltersType = {
 	length: number;
@@ -24,7 +26,7 @@ type Actions = {
 		filterName: keyof PasswordFiltersType,
 		newValue: PasswordFiltersType[keyof PasswordFiltersType]
 	) => void;
-	deleteSavedPassword: (id: string) => void;
+	deleteSavedPassword: (id: string) => Promise<void>;
 };
 
 const usePassword = create<State & Actions>()(
@@ -49,7 +51,7 @@ const usePassword = create<State & Actions>()(
 				const newPassword: SavedPassword = {
 					id: uuidv4(),
 					title,
-					password: get().generatedPassword,
+					hashedPassword: encryptPassword(get().generatedPassword),
 				};
 				set((state) => ({
 					savedPasswords: [newPassword, ...state.savedPasswords],
@@ -72,7 +74,8 @@ const usePassword = create<State & Actions>()(
 					passwordFilters: { ...state.passwordFilters, [filterName]: newValue },
 				}));
 			},
-			deleteSavedPassword: (id) => {
+			deleteSavedPassword: async (id) => {
+				await wait(3000);
 				set((state) => ({
 					savedPasswords: state.savedPasswords.filter((p) => p.id !== id),
 				}));

@@ -110,7 +110,7 @@ const HomePage = () => {
 							<Input id="title" className="col-span-3" ref={titleInputRef} />
 						</div>
 						<DialogFooter className="flex justify-between w-full">
-							<DialogClose>
+							<DialogClose asChild>
 								<Button variant="outline">Cancel</Button>
 							</DialogClose>
 							<Button onClick={savePasswordHandler}>Save</Button>
