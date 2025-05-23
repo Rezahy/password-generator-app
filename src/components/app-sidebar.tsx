@@ -27,7 +27,7 @@ const AppSidebar = () => {
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton
-							tooltip="Wallpaper"
+							tooltip="Home"
 							asChild
 							size="lg"
 							isActive={pathname === "/"}

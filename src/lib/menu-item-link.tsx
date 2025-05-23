@@ -1,10 +1,10 @@
 import type { MenuItemLink } from "@/@types/menu-item-link";
-import { History } from "lucide-react";
+import { Save } from "lucide-react";
 
 export const menuItemLinks: MenuItemLink[] = [
 	{
-		title: "History",
-		url: "/history",
-		icon: History,
+		title: "Saved Passwords",
+		url: "/saved",
+		icon: Save,
 	},
 ];
